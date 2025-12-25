@@ -92,6 +92,7 @@
   font-weight: 600;
   object-fit: contain;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .loginScreen__input {
