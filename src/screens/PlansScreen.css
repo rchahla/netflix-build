@@ -5,6 +5,10 @@
   opacity: 0.7;
 }
 
+.plansScreen__renewaldate {
+  padding-top: 10px;
+}
+
 .plansScreen__plan:hover {
   opacity: 1;
 }
@@ -17,4 +21,9 @@
   font-size: 1rem;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.plansScreen__plan--disabled > button {
+  background-color: gray;
+  cursor: default;
 }
