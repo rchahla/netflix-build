@@ -9,6 +9,11 @@
   padding-top: 10px;
 }
 
+.plansScreen__renewaldate--cancelled {
+  color: #e87c03;
+  font-weight: 600;
+}
+
 .plansScreen__plan:hover {
   opacity: 1;
 }
@@ -26,4 +31,37 @@
 .plansScreen__plan--disabled > button {
   background-color: gray;
   cursor: default;
+}
+
+.plansScreen__cancel {
+  padding: 20px;
+  border-top: 1px solid #333;
+  margin-top: 10px;
+}
+
+.plansScreen__cancelBtn {
+  background-color: transparent;
+  border: 1px solid #e50914;
+  color: #e50914;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.plansScreen__cancelBtn:hover:not(:disabled) {
+  background-color: #e50914;
+  color: white;
+}
+
+.plansScreen__cancelBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.plansScreen__cancelNote {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: gray;
 }

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./LoginScreen.css";
 import SignupScreen from "./SignupScreen";
 
 function LoginScreen() {
-  const [signIn, setSignIn] = useState(false);
+  const [mode, setMode] = useState(null); // null = landing, "signin", "signup"
+
   return (
     <div className="loginScreen">
       <div className="loginScreen__background">
@@ -12,15 +13,15 @@ function LoginScreen() {
           src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png"
           alt="Netflix Logo"
         />
-        <button className="signIn__button" onClick={() => setSignIn(true)}>
+        <button className="signIn__button" onClick={() => setMode("signin")}>
           Sign In
         </button>
         <div className="loginScreen__gradient" />
       </div>
 
       <div className="loginScreen__body">
-        {signIn ? (
-          <SignupScreen />
+        {mode ? (
+          <SignupScreen mode={mode} setMode={setMode} />
         ) : (
           <>
             <h1>Unlimited films, TV programmes and more.</h1>
@@ -34,7 +35,7 @@ function LoginScreen() {
               <form>
                 <input type="email" placeholder="Email Address" />
                 <button
-                  onClick={() => setSignIn(true)}
+                  onClick={() => setMode("signup")}
                   className="loginScreen__getStarted"
                 >
                   GET STARTED

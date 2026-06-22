@@ -24,7 +24,11 @@ function ProfileScreen() {
           <div className="profileScreen__details">
             <h2>{user?.email}</h2>
             <div className="profileScreen__plans">
-              <h3>{`Plans (Current Plan: ${subscription?.role})`}</h3>
+              <h3>
+                {subscription?.cancel_at_period_end
+                  ? `Plans (Cancelled: ${subscription?.role})`
+                  : `Plans (Current Plan: ${subscription?.role})`}
+              </h3>
               <PlansScreen />
             </div>
             <button
