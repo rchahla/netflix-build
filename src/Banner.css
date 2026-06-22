@@ -11,6 +11,26 @@
   height: 190px;
 }
 
+@media (min-width: 1440px) {
+  .banner {
+    height: 560px;
+  }
+
+  .banner_contents {
+    padding-top: 200px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .banner {
+    height: 680px;
+  }
+
+  .banner_contents {
+    padding-top: 260px;
+  }
+}
+
 .banner_title {
   font-size: 3rem;
   font-weight: 800;
@@ -52,6 +72,10 @@
 }
 
 .banner--fadeBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 7.4rem;
   background-image: linear-gradient(
     180deg,

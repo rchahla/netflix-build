@@ -118,3 +118,28 @@
 .row__arrow--right {
   right: 0;
 }
+
+@media (max-width: 767px) {
+  .row {
+    margin: 0 10px;
+    margin-bottom: 8px;
+  }
+
+  .row__posters {
+    gap: 6px;
+  }
+
+  .row__card,
+  .row__card--large {
+    flex: 0 0 calc((100% - 2 * 6px) / 3);
+  }
+
+  .row__arrow {
+    width: 28px;
+    font-size: 2rem;
+  }
+
+  .row__card__overlayTitle {
+    font-size: 0.65rem;
+  }
+}

@@ -1,48 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./PlansScreen.css";
 import dp, { functions } from "../firebase";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
-import {
-  setSubscription,
-  clearSubscription,
-  selectSubscription,
-} from "../features/subscriptionSlice";
+import { selectSubscription } from "../features/subscriptionSlice";
+import { useNavigate } from "react-router-dom";
 
 function PlansScreen() {
   const [products, setProducts] = useState([]);
   const [cancelling, setCancelling] = useState(false);
   const user = useSelector(selectUser);
   const subscription = useSelector(selectSubscription);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const unsubscribe = dp
-      .collection("customers")
-      .doc(user.uid)
-      .collection("subscriptions")
-      .where("status", "in", ["trialing", "active"])
-      .onSnapshot((querySnapshot) => {
-        if (querySnapshot.empty) {
-          dispatch(clearSubscription());
-          return;
-        }
-        querySnapshot.forEach((subscriptionDoc) => {
-          const data = subscriptionDoc.data();
-          dispatch(
-            setSubscription({
-              role: data.role,
-              current_period_end: data.current_period_end.seconds,
-              current_period_start: data.current_period_start.seconds,
-              cancel_at_period_end: data.cancel_at_period_end,
-              status: data.status,
-            })
-          );
-        });
-      });
-
-    return () => unsubscribe();
-  }, [user.uid, dispatch]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dp.collection("products")
@@ -97,18 +66,20 @@ function PlansScreen() {
         "ext-firestore-stripe-payments-createPortalLink"
       );
       const { data } = await createPortalLink({
-        returnUrl: window.location.origin,
+        returnUrl: `${window.location.origin}/profile`,
         locale: "auto",
       });
-      window.location.assign(data.url);
+
+      window.open(data.url, "_blank");
+
+      const handleFocus = () => {
+        window.removeEventListener("focus", handleFocus);
+        navigate("/profile");
+      };
+      window.addEventListener("focus", handleFocus);
     } catch (error) {
       console.error("Portal error:", error);
-      alert(
-        "Could not open the cancellation portal. Please check the browser console for details.\n\n" +
-        "Common causes:\n" +
-        "• Stripe Customer Portal 'Save changes' button was not clicked after enabling cancellations\n" +
-        "• Firebase extension ID mismatch (check Firebase console for the exact extension name)"
-      );
+      alert("Could not open the cancellation portal. Please check the browser console for details.");
       setCancelling(false);
     }
   };
@@ -116,10 +87,20 @@ function PlansScreen() {
   return (
     <div className="plansScreen">
       {subscription && (
-        <p className={`plansScreen__renewaldate ${subscription.cancel_at_period_end ? "plansScreen__renewaldate--cancelled" : ""}`}>
+        <p
+          className={`plansScreen__renewaldate ${
+            subscription.cancel_at_period_end
+              ? "plansScreen__renewaldate--cancelled"
+              : ""
+          }`}
+        >
           {subscription.cancel_at_period_end
-            ? `Your membership has been cancelled. Access ends on ${new Date(subscription.current_period_end * 1000).toLocaleDateString()}.`
-            : `Renewal date: ${new Date(subscription.current_period_end * 1000).toLocaleDateString()}`}
+            ? `Your membership has been cancelled. Access ends on ${new Date(
+                subscription.current_period_end * 1000
+              ).toLocaleDateString()}.`
+            : `Renewal date: ${new Date(
+                subscription.current_period_end * 1000
+              ).toLocaleDateString()}`}
         </p>
       )}
 
